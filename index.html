@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comparify.com | Find the Best Deals & Compare Prices</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Poppins',sans-serif;color:#222;background:#fff;scroll-behavior:smooth;overflow-x:hidden;}
+a{text-decoration:none;color:inherit}
+
+/* HEADER */
+header{background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.08);position:sticky;top:0;z-index:999;animation:slideDown .7s ease;}
+@keyframes slideDown{from{transform:translateY(-40px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.navbar{display:flex;align-items:center;justify-content:space-between;padding:15px 40px;}
+.logo{font-size:1.6rem;font-weight:700;color:#e74c3c;}
+.nav-links{display:flex;gap:25px;font-weight:500;}
+.nav-links a{color:#333;transition:.3s;}
+.nav-links a:hover,.nav-links a.active{color:#e74c3c;transform:scale(1.05);}
+
+/* HERO SLIDER */
+.hero-slider{position:relative;height:480px;overflow:hidden;background:linear-gradient(135deg,#ff5f6d,#f59e0b);color:#fff;}
+.hero-slider .slides{position:relative;height:100%;}
+.hero-slider .slide{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:space-around;padding:40px;text-align:left;opacity:0;transform:scale(0.98);transition:opacity 1s ease, transform 0.8s ease;}
+.hero-slider .slide.active{opacity:1;transform:scale(1);position:relative;}
+.hero-slider .content{max-width:480px;}
+.hero-slider .content h5{font-size:1.2rem;letter-spacing:1px;margin-bottom:10px;opacity:0.9;}
+.hero-slider .content h1{font-size:2.6rem;font-weight:700;margin:5px 0 15px;line-height:1.2;}
+.hero-slider .content h1 span{color:#111;background:#fff;padding:0 6px;border-radius:4px;}
+.hero-slider .content p{font-size:1rem;margin-bottom:25px;opacity:0.9;}
+.hero-slider .content button{padding:10px 25px;background:#fff;color:#e74c3c;border:none;border-radius:4px;font-weight:600;cursor:pointer;transition:0.3s;}
+.hero-slider .content button:hover{background:#f3f3f3;transform:scale(1.05);}
+.hero-slider .image img{width:230px;animation:float 3s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.hero-slider .prev,.hero-slider .next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.3);border:none;color:#fff;font-size:1.3rem;padding:10px 14px;border-radius:50%;cursor:pointer;transition:0.3s;}
+.hero-slider .prev:hover,.hero-slider .next:hover{background:rgba(255,255,255,0.6);color:#e74c3c;}
+.hero-slider .prev{left:25px;}
+.hero-slider .next{right:25px;}
+@media(max-width:800px){
+  .hero-slider .slide{flex-direction:column;text-align:center;}
+  .hero-slider .image img{width:170px;margin-top:20px;}
+}
+
+/* COMMON SECTIONS */
+section{padding:70px 25px;}
+h2.section-title{text-align:center;font-size:1.8rem;margin-bottom:40px;}
+h2.section-title span{color:#e74c3c;}
+.fade-in{opacity:0;transform:translateY(40px);transition:opacity .7s ease,transform .7s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+
+/* STEP CARDS */
+.steps{display:flex;justify-content:center;flex-wrap:wrap;gap:20px;max-width:1000px;margin:auto;}
+.step{background:#fff;width:220px;text-align:center;padding:25px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);transition:.3s;cursor:pointer;}
+.step i{font-size:2rem;color:#e74c3c;margin-bottom:10px;}
+.step:hover{transform:translateY(-6px) scale(1.05);background:#fff9f9;}
+
+/* COMPARE */
+.compare-section{max-width:1000px;margin:auto;text-align:center;}
+#searchInput{width:280px;padding:8px;border:1px solid #ccc;border-radius:4px;}
+.compare-section button{margin-left:10px;padding:8px 14px;background:#e74c3c;border:none;border-radius:4px;color:#fff;cursor:pointer;transition:all .3s;}
+.compare-section button:hover{background:#c0392b;transform:scale(1.05);}
+.table-box{margin-top:30px;overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:0.95rem;animation:fadeInTable .8s;}
+@keyframes fadeInTable{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+th,td{border-bottom:1px solid #eee;padding:12px;text-align:left;}
+th{background:#f9f9f9;}
+.best{background:#eaf9ec;}
+.buy-btn{background:#e74c3c;color:#fff;padding:6px 10px;border-radius:4px;font-size:0.8rem;transition:.3s;}
+.buy-btn:hover{background:#c0392b;}
+.loader{border:5px solid #f3f3f3;border-top:5px solid #e74c3c;border-radius:50%;width:40px;height:40px;animation:spin 1s linear infinite;margin:20px auto;}
+@keyframes spin{0%{transform:rotate(0);}100%{transform:rotate(360deg);}}
+
+/* REVIEWS, COUPONS, CONTACT */
+.reviews{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;max-width:1000px;margin:auto;}
+.review{background:#fff;padding:20px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.1);transition:all .3s;}
+.review:hover{transform:translateY(-5px);}
+.stars i{color:#ccc;cursor:pointer;}
+.stars i.active{color:#f1c40f;}
+.review p{font-size:0.95rem;margin-top:10px;}
+.reviewer{font-weight:600;margin-top:10px;color:#555;}
+.coupons{max-width:1000px;margin:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
+.coupon{background:#fff;border:1px solid #eee;padding:20px;border-radius:5px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,0.05);transition:.3s;}
+.coupon:hover{transform:translateY(-6px);box-shadow:0 3px 10px rgba(0,0,0,0.1);}
+.coupon h4{color:#e74c3c;margin-bottom:10px;}
+.coupon button{margin-top:10px;padding:8px 14px;border:none;background:#e74c3c;color:#fff;border-radius:4px;cursor:pointer;transition:.3s;}
+.coupon button:hover{background:#c0392b;transform:scale(1.05);}
+.contact-box{max-width:800px;margin:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px;}
+.contact form{display:flex;flex-direction:column;gap:10px;}
+.contact input,.contact textarea{padding:10px;border:1px solid #ccc;border-radius:4px;font-family:'Poppins';}
+.contact button{padding:10px;border:none;background:#e74c3c;color:#fff;border-radius:4px;cursor:pointer;font-weight:600;transition:.3s;}
+.contact button:hover{background:#c0392b;transform:scale(1.05);}
+
+/* FOOTER */
+footer{background:#111;color:#ccc;padding:50px 30px 20px;margin-top:50px;}
+.footer-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:40px;max-width:1000px;margin:auto;}
+.footer-logo h3{color:#f59e0b;margin-bottom:10px;}
+.social i{margin-right:8px;background:#222;padding:8px;border-radius:50%;color:#fff;transition:.3s;}
+.social i:hover{background:#e74c3c;}
+.subscribe input{width:100%;padding:8px;border:none;border-radius:4px;margin-bottom:8px;}
+.subscribe button{width:100%;background:#e74c3c;border:none;color:#fff;padding:8px;border-radius:4px;cursor:pointer;transition:.3s;}
+.subscribe button:hover{background:#c0392b;}
+.copy{text-align:center;font-size:0.85rem;color:#777;margin-top:30px;border-top:1px solid #333;padding-top:10px;}
+
+@media(max-width:600px){.nav-links{flex-wrap:wrap;gap:15px;justify-content:center;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="navbar">
+    <div class="logo">Comparify<span style="color:#111;">.com</span></div>
+    <div class="nav-links">
+      <a href="#home" class="active">Home</a>
+      <a href="#how">How it Works</a>
+      <a href="#compare">Compare</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#coupons">Coupons</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===== Hero Slider Section (5 Slides) ===== -->
+<section id="home" class="hero-slider">
+  <div class="slides">
+
+    <div class="slide active">
+      <div class="content">
+        <h5>The Best</h5><h1><span>Comparison</span> Platform</h1>
+        <p>Find and compare the best online deals effortlessly.</p>
+        <button onclick="document.getElementById('compare').scrollIntoView({behavior:'smooth'});">Go to Compare</button>
+      </div>
+      <div class="image"><img src="https://cdn.pixabay.com/photo/2019/06/03/05/43/laptop-4245884_960_720.png" alt=""></div>
+    </div>
+
+    <div class="slide">
+      <div class="content">
+        <h5>Exclusive</h5><h1><span>Fashion</span> Discounts</h1>
+        <p>Compare latest Myntra and Flipkart clothing offers.</p>
+        <button onclick="document.getElementById('compare').scrollIntoView({behavior:'smooth'});">Shop Now</button>
+      </div>
+      <div class="image"><img src="https://cdn.pixabay.com/photo/2016/11/21/14/02/shoes-1846591_960_720.png" alt=""></div>
+    </div>
+
+    <div class="slide">
+      <div class="content">
+        <h5>Latest</h5><h1><span>Gadgets</span> Price Check</h1>
+        <p>Stay updated with the best deals on mobiles and accessories.</p>
+        <button onclick="document.getElementById('compare').scrollIntoView({behavior:'smooth'});">Explore Products</button>
+      </div>
+      <div class="image"><img src="https://cdn.pixabay.com/photo/2015/12/03/02/37/phone-1076815_960_720.png" alt=""></div>
+    </div>
+
+    <div class="slide">
+      <div class="content">
+        <h5>Smart</h5><h1><span>Home</span> Appliances</h1>
+        <p>Compare deals on refrigerators, microwaves, and washing machines.</p>
+        <button onclick="document.getElementById('compare').scrollIntoView({behavior:'smooth'});">Browse Deals</button>
+      </div>
+      <div class="image"><img src="https://cdn.pixabay.com/photo/2017/02/01/21/22/refrigerator-2038623_960_720.png" alt=""></div>
+    </div>
+
+    <div class="slide">
+      <div class="content">
+        <h5>Modern</h5><h1><span>Furniture</span> Collections</h1>
+        <p>Shop and compare best furniture designs from top stores.</p>
+        <button onclick="document.getElementById('compare').scrollIntoView({behavior:'smooth'});">Explore Now</button>
+      </div>
+      <div class="image"><img src="https://cdn.pixabay.com/photo/2016/11/29/11/42/chair-1864124_960_720.png" alt=""></div>
+    </div>
+
+  </div>
+  <button class="prev"><i class="fa fa-chevron-left"></i></button>
+  <button class="next"><i class="fa fa-chevron-right"></i></button>
+</section>
+
+<section id="how" class="fade-in">
+  <h2 class="section-title">How <span>Comparify</span> Works</h2>
+  <div class="steps">
+    <div class="step"><i class="fa-solid fa-search"></i><h4>Search Product</h4><p>Type the item you want to buy.</p></div>
+    <div class="step"><i class="fa-solid fa-chart-line"></i><h4>Compare Prices</h4><p>We fetch live prices from top stores.</p></div>
+    <div class="step"><i class="fa-solid fa-star"></i><h4>Read Reviews</h4><p>Check ratings before purchase.</p></div>
+    <div class="step"><i class="fa-solid fa-cart-shopping"></i><h4>Choose Best Deal</h4><p>Buy directly from your preferred store.</p></div>
+  </div>
+</section>
+
+<section id="compare" class="fade-in">
+  <h2 class="section-title">Compare <span>Prices</span></h2>
+  <div class="compare-section">
+    <input id="searchInput" type="text" placeholder="Enter product name">
+    <button id="compareBtn">Compare Now</button>
+    <div class="table-box" id="tableBox"></div>
+    <div id="recentSearches" style="margin-top:20px;"></div>
+  </div>
+</section>
+
+<section id="reviews" class="fade-in">
+  <h2 class="section-title">Latest <span>Reviews</span></h2>
+  <div class="reviews">
+    <div class="review"><div class="stars"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div><p>Super quick comparison — found my best deal instantly!</p><div class="reviewer">- Aman Khanna</div></div>
+    <div class="review"><div class="stars"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-alt"></i></div><p>Clean interface, love how it highlights best deals.</p><div class="reviewer">- Shruti Nair</div></div>
+    <div class="review"><div class="stars"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div><p>Perfect for comparing prices across Amazon and Flipkart!</p><div class="reviewer">- Rahul Mehta</div></div>
+  </div>
+</section>
+
+<section id="coupons" class="fade-in">
+  <h2 class="section-title"><span>Coupons</span> & Offers</h2>
+  <div class="coupons">
+    <div class="coupon"><h4>10% OFF Amazon Electronics</h4><p>Use Code: <b>AMAZ10</b></p><button>Copy Code</button></div>
+    <div class="coupon"><h4>₹500 OFF Flipkart Mobiles</h4><p>Use Code: <b>FLIP500</b></p><button>Copy Code</button></div>
+    <div class="coupon"><h4>15% OFF Myntra Fashion</h4><p>Use Code: <b>MYN15</b></p><button>Copy Code</button></div>
+  </div>
+</section>
+
+<section id="contact" class="fade-in">
+  <h2 class="section-title">Contact <span>Us</span></h2>
+  <div class="contact-box contact">
+    <form>
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <input type="text" placeholder="Subject">
+      <textarea rows="5" placeholder="Message"></textarea>
+      <button type="button" onclick="alert('Thanks for contacting Comparify!')">Send Message</button>
+    </form>
+    <div>
+      <h3>Customer Support</h3>
+      <p>Email: support@comparify.com<br>Phone: +91‑98765‑43210</p>
+      <p style="margin-top:15px;">We usually reply within 24 hours.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-container">
+    <div class="footer-logo"><h3>Comparify.com</h3><p>Compare prices of products across popular stores and get the best deals instantly.</p>
+      <div class="social"><i class="fab fa-facebook"></i><i class="fab fa-twitter"></i><i class="fab fa-linkedin"></i><i class="fab fa-instagram"></i></div>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
+      <p><a href="#home">Home</a></p><p><a href="#how">How it Works</a></p><p><a href="#compare">Compare</a></p><p><a href="#contact">Contact</a></p>
+    </div>
+    <div class="subscribe"><h4>Newsletter</h4><p>Stay updated with the latest deals.</p>
+      <input type="email" placeholder="Your Email"><button onclick="alert('Thanks for subscribing to Comparify!')">Join Us</button>
+    </div>
+  </div>
+  <div class="copy">© 2025 Comparify.com — All Rights Reserved.</div>
+</footer>
+
+<script>
+/* === SLIDER === */
+const slides=document.querySelectorAll('.hero-slider .slide');
+let current=0;
+function showSlide(i){slides.forEach((s,idx)=>s.classList.toggle('active',idx===i));}
+document.querySelector('.next').addEventListener('click',()=>{current=(current+1)%slides.length;showSlide(current);});
+document.querySelector('.prev').addEventListener('click',()=>{current=(current-1+slides.length)%slides.length;showSlide(current);});
+setInterval(()=>{current=(current+1)%slides.length;showSlide(current);},6000);
+
+/* === ON SCROLL ANIMATION === */
+const faders=document.querySelectorAll('.fade-in');
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.2});
+faders.forEach(f=>observer.observe(f));
+
+/* === COMPARISON LOGIC === */
+// (price logic + store mapping + cache)
+function getCategory(p){const t=p.toLowerCase();if(/shirt|tshirt|shoes|dress|jeans|watch|fashion|sneakers|bag|hoodie|kurta/.test(t))return"fashion";if(/laptop|camera|tv|macbook|electronic|headphone|monitor/.test(t))return"electronics";if(/mobile|phone|iphone|tablet/.test(t))return"mobile";if(/chair|table|sofa|furniture|bed|home/.test(t))return"home";return"generic";}
+function getStores(c){switch(c){case"fashion":return["Myntra","Ajio","Amazon","Flipkart"];case"electronics":return["Amazon","Flipkart","Croma","Reliance Digital","Vijay Sales"];case"mobile":return["Amazon","Flipkart","Croma","Reliance Digital"];case"home":return["Amazon","Flipkart","TataCliq","BigBasket"];default:return["Amazon","Flipkart","Croma"];}}
+function getPriceRange(c){switch(c){case"fashion":return[400,3000];case"electronics":return[25000,120000];case"mobile":return[8000,90000];case"home":return[3000,30000];default:return[1000,20000];}}
+function getIcon(s){const i={"Amazon":"fa-brands fa-amazon","Flipkart":"fa-solid fa-store","Myntra":"fa-solid fa-shirt","Ajio":"fa-solid fa-bag-shopping","Croma":"fa-solid fa-tv","Reliance Digital":"fa-solid fa-laptop","Vijay Sales":"fa-solid fa-store","TataCliq":"fa-solid fa-cart-shopping","BigBasket":"fa-solid fa-basket-shopping"};return i[s]||"fa-solid fa-store";}
+function getStoreLink(store,p){const q=encodeURIComponent(p);const pd=p.toLowerCase().replace(/\s+/g,'-');if(/shirt|tshirt|shoe|watch|jean|dress|fashion|sneaker/.test(p.toLowerCase())){if(store==="Amazon")return`https://www.amazon.in/s?k=${q}&i=fashion`;if(store==="Flipkart")return`https://www.flipkart.com/search?q=${q}`;if(store==="Myntra")return`https://www.myntra.com/${pd}`;if(store==="Ajio")return`https://www.ajio.com/search/?text=${q}`;}
+if(/laptop|mobile|phone|camera|tv|macbook|headphone/.test(p.toLowerCase())){if(store==="Amazon")return`https://www.amazon.in/s?k=${q}&i=electronics`;if(store==="Flipkart")return`https://www.flipkart.com/search?q=${q}`;if(store==="Croma")return`https://www.croma.com/search/?text=${q}`;if(store==="Reliance Digital")return`https://www.reliancedigital.in/search?q=${q}`;if(store==="Vijay Sales")return`https://www.vijaysales.com/search?SearchStr=${q}`;}
+if(/chair|sofa|table|furniture|bed|home/.test(p.toLowerCase())){if(store==="Amazon")return`https://www.amazon.in/s?k=${q}&i=kitchen`;if(store==="Flipkart")return`https://www.flipkart.com/search?q=${q}`;if(store==="TataCliq")return`https://www.tatacliq.com/search/?searchCategory=${q}`;if(store==="BigBasket")return`https://www.bigbasket.com/ps/?q=${q}`;}
+return`https://www.${store.toLowerCase().replace(/\s+/g,'')}.com/search?q=${q}`;}
+function saveSearch(term){if(!term)return;let s=JSON.parse(localStorage.getItem('comparify_recent'))||[];term=term.toLowerCase();s=s.filter(t=>t!==term);s.unshift(term);if(s.length>5)s=s.slice(0,5);localStorage.setItem('comparify_recent',JSON.stringify(s));renderRecent();}
+function renderRecent(){const c=document.getElementById('recentSearches');const s=JSON.parse(localStorage.getItem('comparify_recent'))||[];if(!s.length){c.innerHTML='';return;}c.innerHTML=`<p style="margin-bottom:8px;font-weight:500;">Recent Searches:</p><div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;">${s.map(x=>`<span class='recent-chip' style='padding:6px 10px;border:1px solid #e74c3c;border-radius:20px;color:#e74c3c;cursor:pointer;font-size:0.9rem;'>${x}</span>`).join('')}</div>`;c.querySelectorAll('.recent-chip').forEach(ch=>{ch.addEventListener('click',()=>{document.getElementById('searchInput').value=ch.textContent;document.getElementById('compareBtn').click();});});}
+renderRecent();
+document.getElementById('compareBtn').addEventListener('click',()=>{const product=document.getElementById('searchInput').value.trim();const box=document.getElementById('tableBox');if(!product){alert('Please enter a product name!');return;}saveSearch(product);box.innerHTML='<div class="loader"></div><p>Fetching live prices for "'+product+'"...</p>';const cat=getCategory(product);const stores=getStores(cat);const[mi,ma]=getPriceRange(cat);setTimeout(()=>{const bp=Math.floor(Math.random()*(ma-mi)+mi);const arr=stores.map(s=>({site:s,price:Math.floor(bp*(0.9+Math.random()*0.15)),shipping:Math.random()<0.7?'Free':'₹'+Math.floor(Math.random()*99),link:getStoreLink(s,product)}));arr.sort((a,b)=>a.price-b.price);box.innerHTML=`<table><tr><th>Store</th><th>Price</th><th>Shipping</th><th>Buy</th></tr>${arr.map((p,i)=>`<tr class='${i===0?"best":""}'><td><i class='${getIcon(p.site)}' style='color:#e74c3c;margin-right:6px'></i>${p.site}${i===0?" <span style='color:green;font-weight:600;'>✔ Best Deal</span>":""}</td><td>₹${p.price.toLocaleString()}</td><td>${p.shipping}</td><td><a class='buy-btn' href='${p.link}' target='_blank'>Buy Now</a></td></tr>`).join('')}</table>`;box.scrollIntoView({behavior:'smooth'});},1000);});
+</script>
+</body>
+</html>
